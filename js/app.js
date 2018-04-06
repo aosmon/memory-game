@@ -1,6 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
+
  let cardFaces = ['fa fa-diamond',
                   'fa fa-paper-plane-o',
                   'fa fa-anchor',
@@ -11,7 +12,7 @@
                   'fa fa-bomb'
                  ];
  cardFaces = cardFaces.concat(cardFaces);
-
+ let openCards = [];
 
 /*
  * Display the cards on the page
@@ -28,7 +29,7 @@
      cards[i].appendChild(content);
      cards[i].addEventListener('click', function(){
         showSymbol(i);
-
+        addToOpenCards(i);
      });
  }
 
@@ -63,3 +64,16 @@ function shuffle(array) {
  function showSymbol(i){
      cards[i].classList.add('open', 'show');
  }
+
+ function addToOpenCards(i){
+    openCards.push({id: i, card: cards[i]});
+    console.log(cards[i].firstChild);
+    if(openCards.length>1){
+        console.log(openCards[0].card.innerHTML+' : '+ openCards[1].card.innerHTML);
+        if(openCards[0].card.innerHTML===openCards[1].card.innerHTML){
+            openCards = [];
+        }else{
+            openCards = [];
+        }
+    }
+}
