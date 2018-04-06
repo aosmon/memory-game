@@ -19,6 +19,14 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+ cardFaces = shuffle(cardFaces);
+ let cards = document.getElementsByClassName('card');
+
+ for(let i=0; i<cardFaces.length;i++){
+     let content = document.createElement('i');
+     content.setAttribute('class', cardFaces[i]);
+     cards[i].appendChild(content);
+ }
 
 
 
