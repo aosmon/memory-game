@@ -26,6 +26,9 @@
      let content = document.createElement('i');
      content.setAttribute('class', cardFaces[i]);
      cards[i].appendChild(content);
+     cards[i].addEventListener('click', function(){
+
+     });
  }
 
 
