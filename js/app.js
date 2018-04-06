@@ -27,6 +27,7 @@
      content.setAttribute('class', cardFaces[i]);
      cards[i].appendChild(content);
      cards[i].addEventListener('click', function(){
+        showSymbol(i);
 
      });
  }
@@ -48,7 +49,6 @@ function shuffle(array) {
     return array;
 }
 
-
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -59,3 +59,7 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+ function showSymbol(i){
+     cards[i].classList.add('open', 'show');
+ }
