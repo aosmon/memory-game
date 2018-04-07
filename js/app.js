@@ -1,22 +1,22 @@
 /*
  * Create a list that holds all of your cards
  */
+let cardFaces = ['fa fa-diamond',
+                 'fa fa-paper-plane-o',
+                 'fa fa-anchor',
+                 'fa fa-bolt',
+                 'fa fa-cube',
+                 'fa fa-leaf',
+                 'fa fa-bicycle',
+                 'fa fa-bomb'
+                ];
+cardFaces = cardFaces.concat(cardFaces);
 
- let cardFaces = ['fa fa-diamond',
-                  'fa fa-paper-plane-o',
-                  'fa fa-anchor',
-                  'fa fa-bolt',
-                  'fa fa-cube',
-                  'fa fa-leaf',
-                  'fa fa-bicycle',
-                  'fa fa-bomb'
-                 ];
- cardFaces = cardFaces.concat(cardFaces);
- let openCards = [];
- let movesCounter = 0;
- let moves = document.querySelector('.moves');
- moves.textContent = movesCounter;
- let stars = document.querySelector('.stars');
+let openCards = [];
+let movesCounter = 0;
+let moves = document.querySelector('.moves');
+moves.textContent = movesCounter;
+let stars = document.querySelector('.stars');
 
 /*
  * Display the cards on the page
@@ -24,21 +24,17 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
- cardFaces = shuffle(cardFaces);
- let cards = document.getElementsByClassName('card');
 
- for(let i=0; i<cardFaces.length;i++){
-     let content = document.createElement('i');
-     content.setAttribute('class', cardFaces[i]);
-     cards[i].appendChild(content);
-     cards[i].addEventListener('click', function(){
-        if(!cards[i].classList.contains('match')){
-            showSymbol(i);
-            addToOpenCards(i);
-        }
-     });
- }
+cardFaces = shuffle(cardFaces);
+let cards = document.getElementsByClassName('card');
+let deck = document.querySelector('.deck');
 
+for(let i=0; i<cardFaces.length;i++){
+    let content = document.createElement('i');
+    content.setAttribute('class', cardFaces[i]);
+    cards[i].appendChild(content);
+}
+deck.addEventListener('click', onCardClick);
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -56,6 +52,71 @@ function shuffle(array) {
     return array;
 }
 
+function onCardClick(e){
+        if(e.target.classList.contains('card')){
+            if(!e.target.classList.contains('match')){
+                showSymbol(e.target);
+                addToOpenCards(e.target);
+            }
+        }
+    }
+
+function showSymbol(card){
+    card.classList.add('open', 'show');
+}
+
+function addToOpenCards(card){
+    if(openCards.length===1){
+        if(openCards[0]===card){
+            return;
+        }
+    }
+    openCards.push(card);
+
+    if(openCards.length>1){
+        if(openCards[0].innerHTML===openCards[1].innerHTML){
+            lockCardsOpen(openCards[0]);
+            lockCardsOpen(openCards[1]);
+            openCards = [];
+        }else{
+            hideSymbol(openCards[0]);
+            hideSymbol(openCards[1]);
+            openCards = [];
+        }
+        incrementCounter();
+        updateScoreStars();
+    }
+}
+
+function lockCardsOpen(card){
+    card.classList.add('match');
+}
+
+function hideSymbol(card){
+    card.setAttribute('class', 'card');
+}
+
+function incrementCounter(){
+    movesCounter++;
+    moves.textContent = movesCounter;
+ }
+
+function updateScoreStars(){
+    if(movesCounter>9){
+        stars.children[2].firstElementChild.classList.remove('fa-star');
+        stars.children[2].firstElementChild.classList.add('fa-star-o');
+    }
+    if(movesCounter>14){
+        stars.children[1].firstElementChild.classList.remove('fa-star');
+        stars.children[1].firstElementChild.classList.add('fa-star-o');
+    }
+    if(movesCounter>20){
+        stars.children[0].firstElementChild.classList.remove('fa-star');
+        stars.children[0].firstElementChild.classList.add('fa-star-o');
+    }
+
+}
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -66,60 +127,3 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
- function showSymbol(i){
-     cards[i].classList.add('open', 'show');
- }
-
- function addToOpenCards(i){
-   if(openCards.length===1){
-       if(openCards[0].id===i){
-           return;
-       }
-   }
-    openCards.push({id: i, card: cards[i]});
-
-    if(openCards.length>1){
-        console.log(openCards[0].card.innerHTML+' : '+ openCards[1].card.innerHTML);
-        if(openCards[0].card.innerHTML===openCards[1].card.innerHTML){
-            lockCardsOpen(openCards[0].id);
-            lockCardsOpen(openCards[1].id);
-            openCards = [];
-        }else{
-            hideSymbol(openCards[0].id);
-            hideSymbol(openCards[1].id);
-            openCards = [];
-        }
-        incrementCounter();
-        updateScoreStars();
-    }
-}
-
-function lockCardsOpen(i){
-    cards[i].classList.add('match');
-}
-
-function hideSymbol(i){
-    cards[i].setAttribute('class', 'card');
-}
-
-function incrementCounter(){
-    movesCounter++;
-    moves.textContent = movesCounter;
- }
-
-function updateScoreStars(){
-   if(movesCounter>9){
-       stars.children[2].firstElementChild.classList.remove('fa-star');
-       stars.children[2].firstElementChild.classList.add('fa-star-o');
-   }
-   if(movesCounter>14){
-       stars.children[1].firstElementChild.classList.remove('fa-star');
-       stars.children[1].firstElementChild.classList.add('fa-star-o');
-   }
-   if(movesCounter>20){
-       stars.children[0].firstElementChild.classList.remove('fa-star');
-       stars.children[0].firstElementChild.classList.add('fa-star-o');
-   }
-
-}
