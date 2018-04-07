@@ -78,6 +78,8 @@ function shuffle(array) {
 
             openCards = [];
         }else{
+            hideSymbol(openCards[0].id);
+            hideSymbol(openCards[1].id);
             openCards = [];
         }
     }
@@ -85,4 +87,8 @@ function shuffle(array) {
 
 function lockCardsOpen(i){
     cards[i].classList.add('match');
+}
+
+function hideSymbol(i){
+    cards[i].setAttribute('class', 'card');
 }
