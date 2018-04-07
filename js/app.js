@@ -13,6 +13,9 @@
                  ];
  cardFaces = cardFaces.concat(cardFaces);
  let openCards = [];
+ let movesCounter = 0;
+ let moves = document.querySelector('.moves');
+ moves.textContent = movesCounter;
 
 /*
  * Display the cards on the page
@@ -75,11 +78,12 @@ function shuffle(array) {
         if(openCards[0].card.innerHTML===openCards[1].card.innerHTML){
             lockCardsOpen(openCards[0].id);
             lockCardsOpen(openCards[1].id);
-
+            incrementCounter();
             openCards = [];
         }else{
             hideSymbol(openCards[0].id);
             hideSymbol(openCards[1].id);
+            incrementCounter();
             openCards = [];
         }
     }
@@ -92,3 +96,8 @@ function lockCardsOpen(i){
 function hideSymbol(i){
     cards[i].setAttribute('class', 'card');
 }
+
+function incrementCounter(){
+    movesCounter++;
+    moves.textContent = movesCounter;
+ }
