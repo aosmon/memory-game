@@ -71,8 +71,13 @@ function shuffle(array) {
  }
 
  function addToOpenCards(i){
+   if(openCards.length===1){
+       if(openCards[0].id===i){
+           return;
+       }
+   }
     openCards.push({id: i, card: cards[i]});
-    console.log(cards[i].firstChild);
+
     if(openCards.length>1){
         console.log(openCards[0].card.innerHTML+' : '+ openCards[1].card.innerHTML);
         if(openCards[0].card.innerHTML===openCards[1].card.innerHTML){
