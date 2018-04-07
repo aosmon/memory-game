@@ -11,13 +11,20 @@ let cardFaces = ['fa fa-diamond',
                  'fa fa-bomb'
                 ];
 cardFaces = cardFaces.concat(cardFaces);
-
 let openCards = [];
+
 let movesCounter = 0;
 let moves = document.querySelector('.moves');
 moves.textContent = movesCounter;
 let stars = document.querySelector('.stars');
 
+let restartButton = document.querySelector('.restart');
+restartButton.addEventListener('click', restartGame);
+let cards = document.getElementsByClassName('card');
+let deck = document.querySelector('.deck');
+deck.addEventListener('click', onCardClick);
+
+displayCards();
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -25,17 +32,15 @@ let stars = document.querySelector('.stars');
  *   - add each card's HTML to the page
  */
 
+function displayCards(){
 cardFaces = shuffle(cardFaces);
-let cards = document.getElementsByClassName('card');
-let deck = document.querySelector('.deck');
 
 for(let i=0; i<cardFaces.length;i++){
     let content = document.createElement('i');
     content.setAttribute('class', cardFaces[i]);
     cards[i].appendChild(content);
 }
-deck.addEventListener('click', onCardClick);
-
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -115,6 +120,20 @@ function updateScoreStars(){
         stars.children[0].firstElementChild.classList.add('fa-star-o');
     }
 
+}
+
+function restartGame(){
+    movesCounter = 0;
+    cardFaces = shuffle(cardFaces);
+    moves.textContent = movesCounter;
+    for(let i=0; i<cardFaces.length;i++){
+        cards[i].firstElementChild.remove();
+        cards[i].setAttribute('class', 'card');
+    }
+    stars.children[0].firstElementChild.setAttribute('class', 'fa fa-star');
+    stars.children[1].firstElementChild.setAttribute('class', 'fa fa-star');
+    stars.children[2].firstElementChild.setAttribute('class', 'fa fa-star');
+    displayCards();
 }
 
 /*
