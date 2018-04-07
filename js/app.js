@@ -28,8 +28,10 @@
      content.setAttribute('class', cardFaces[i]);
      cards[i].appendChild(content);
      cards[i].addEventListener('click', function(){
-        showSymbol(i);
-        addToOpenCards(i);
+        if(!cards[i].classList.contains('match')){
+            showSymbol(i);
+            addToOpenCards(i);
+        }
      });
  }
 
@@ -71,9 +73,16 @@ function shuffle(array) {
     if(openCards.length>1){
         console.log(openCards[0].card.innerHTML+' : '+ openCards[1].card.innerHTML);
         if(openCards[0].card.innerHTML===openCards[1].card.innerHTML){
+            lockCardsOpen(openCards[0].id);
+            lockCardsOpen(openCards[1].id);
+
             openCards = [];
         }else{
             openCards = [];
         }
     }
+}
+
+function lockCardsOpen(i){
+    cards[i].classList.add('match');
 }
