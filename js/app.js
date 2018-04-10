@@ -33,13 +33,13 @@ displayCards();
  */
 
 function displayCards(){
-cardFaces = shuffle(cardFaces);
+  cardFaces = shuffle(cardFaces);
 
-for(let i=0; i<cardFaces.length;i++){
-    let content = document.createElement('i');
-    content.setAttribute('class', cardFaces[i]);
-    cards[i].appendChild(content);
-}
+  for(let i=0; i<cardFaces.length;i++){
+      let content = document.createElement('i');
+      content.setAttribute('class', cardFaces[i]);
+      cards[i].appendChild(content);
+  }
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -84,8 +84,7 @@ function addToOpenCards(card){
             lockCardsOpen(openCards[1]);
             openCards = [];
         }else{
-            hideSymbol(openCards[0]);
-            hideSymbol(openCards[1]);
+            hideSymbols(openCards[0], openCards[1]);
             openCards = [];
         }
         incrementCounter();
@@ -97,8 +96,13 @@ function lockCardsOpen(card){
     card.classList.add('match');
 }
 
-function hideSymbol(card){
-    card.setAttribute('class', 'card');
+function hideSymbols(card1, card2){
+    card1.classList.add('wobble');
+    card2.classList.add('wobble');    
+    setTimeout(function(){
+        card1.setAttribute('class', 'card');
+        card2.setAttribute('class', 'card');
+    }, 1000)
 }
 
 function incrementCounter(){
