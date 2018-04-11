@@ -166,7 +166,7 @@ h1 {
 
 /* CSS animations from http://daneden.github.io/animate.css */
 .deck .card.wobble{
-    cursor: default;
+    cursor: pointer;
     -webkit-animation-name: wobble;
     animation-name: wobble;
     animation-duration: 1s;
@@ -234,5 +234,49 @@ h1 {
 
 .score-panel .restart {
     float: right;
+    cursor: pointer;
+}
+
+#modal {
+    visibility: hidden;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height:100%;
+    text-align:center;
+    z-index: 1000;
+    font-family: 'Arial', sans-serif;
+    color: #555;
+    font-size: 1.1em;
+}
+
+#modal div {
+     width: 100%;
+     height: 100%;
+     background-color: #fff;
+     border: 0;
+     padding:15px;
+     text-align:center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+#modal .win-message{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+#modal .play-again{
+    display: inline-block;
+    background-color: #02ccba;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 150px;
+    height: auto;
     cursor: pointer;
 }

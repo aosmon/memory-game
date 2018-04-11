@@ -16,7 +16,10 @@ let openCards = [];
 let movesCounter = 0;
 let moves = document.querySelector('.moves');
 moves.textContent = movesCounter;
+let starsCounter = 3;
 let stars = document.querySelector('.stars');
+const MATCH = 16;
+let matchCounter = 0;
 
 let restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', restartGame);
@@ -94,11 +97,15 @@ function addToOpenCards(card){
 
 function lockCardsOpen(card){
     card.classList.add('match');
+    matchCounter++;
+    if(matchCounter===MATCH){
+        endGame();
+    }
 }
 
 function hideSymbols(card1, card2){
     card1.classList.add('wobble');
-    card2.classList.add('wobble');    
+    card2.classList.add('wobble');
     setTimeout(function(){
         card1.setAttribute('class', 'card');
         card2.setAttribute('class', 'card');
@@ -110,21 +117,23 @@ function incrementCounter(){
     moves.textContent = movesCounter;
  }
 
-function updateScoreStars(){
-    if(movesCounter>9){
-        stars.children[2].firstElementChild.classList.remove('fa-star');
-        stars.children[2].firstElementChild.classList.add('fa-star-o');
-    }
-    if(movesCounter>14){
-        stars.children[1].firstElementChild.classList.remove('fa-star');
-        stars.children[1].firstElementChild.classList.add('fa-star-o');
-    }
-    if(movesCounter>20){
-        stars.children[0].firstElementChild.classList.remove('fa-star');
-        stars.children[0].firstElementChild.classList.add('fa-star-o');
-    }
+ function updateScoreStars(){
+     if(movesCounter>9){
 
-}
+        starsCounter = 2; stars.children[2].firstElementChild.classList.remove('fa-star');
+         stars.children[2].firstElementChild.classList.add('fa-star-o');
+     }
+     if(movesCounter>14){
+
+        starsCounter = 1; stars.children[1].firstElementChild.classList.remove('fa-star');
+         stars.children[1].firstElementChild.classList.add('fa-star-o');
+     }
+     if(movesCounter>20){
+
+        starsCounter = 0; stars.children[0].firstElementChild.classList.remove('fa-star');
+         stars.children[0].firstElementChild.classList.add('fa-star-o');
+     }
+ }
 
 function restartGame(){
     movesCounter = 0;
@@ -138,6 +147,19 @@ function restartGame(){
     stars.children[1].firstElementChild.setAttribute('class', 'fa fa-star');
     stars.children[2].firstElementChild.setAttribute('class', 'fa fa-star');
     displayCards();
+}
+
+function endGame() {
+	setTimeout(function(){
+        let modal = document.getElementById("modal");
+        modal.style.visibility = "visible";
+        document.querySelector('.win-results').textContent = 'With '+movesCounter+' Moves and '+ starsCounter+' Stars.';
+        document.querySelector('.play-again').addEventListener('click', function(){
+        modal.style.visibility = "hidden";
+        restartGame();
+
+    });
+    }, 1000);
 }
 
 /*
