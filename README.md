@@ -7,7 +7,7 @@ Provided starter project had some HTML and CSS styling to display a static versi
 
 For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
 
-![Screenshot](memory-game/screen-shot-2017-02-07-at-3.03.15-pm.png)
+![Screenshot](memory-game/screen-shot-2017-02-07-at-3.03.15-pm.png?raw=true "Screenshot")
 
 ## How The Game Works
 
