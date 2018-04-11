@@ -7,7 +7,7 @@ Provided starter project had some HTML and CSS styling to display a static versi
 
 For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
 
-![Screenshot](https://github.com/aosmon/memory-game/screen-shot-2017-02-07-at-3.03.15-pm.png?raw=true "Screenshot")
+<img width="658" alt="screen-shot-2017-02-07-at-3 03 15-pm" src="https://user-images.githubusercontent.com/26148396/38635332-0318a750-3d93-11e8-88cb-d8c874e77ce7.png">
 
 ## How The Game Works
 
