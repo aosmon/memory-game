@@ -20,12 +20,21 @@ let starsCounter = 3;
 let stars = document.querySelector('.stars');
 const MATCH = 16;
 let matchCounter = 0;
+let time = 0;
 
 let restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', restartGame);
 let cards = document.getElementsByClassName('card');
 let deck = document.querySelector('.deck');
 deck.addEventListener('click', onCardClick);
+let myTimer = new Timer({
+  tick    : 1,
+  ontick  : function(ms) { time++; },
+  onstart : function() { console.log('timer started') },
+  onstop  : function() { console.log('timer stop') },
+  onpause : function() { console.log('timer set on pause') },
+  onend   : function() { console.log('timer ended normally') }
+});
 
 displayCards();
 /*
@@ -61,13 +70,21 @@ function shuffle(array) {
 }
 
 function onCardClick(e){
-        if(e.target.classList.contains('card')){
-            if(!e.target.classList.contains('match')){
-                showSymbol(e.target);
-                addToOpenCards(e.target);
-            }
-        }
-    }
+
+  let timerStarted = false;
+
+      if(e.target.classList.contains('card')){
+          if(!e.target.classList.contains('match')){
+              showSymbol(e.target);
+              addToOpenCards(e.target);
+          }
+      }
+  if(!timerStarted){
+    myTimer.start(1000);
+  }
+  console.log(time);
+
+}
 
 function showSymbol(card){
     card.classList.add('open', 'show');
@@ -147,13 +164,16 @@ function restartGame(){
     stars.children[1].firstElementChild.setAttribute('class', 'fa fa-star');
     stars.children[2].firstElementChild.setAttribute('class', 'fa fa-star');
     displayCards();
+    time = 0;
+    myTimer.stop();
+    timerStarted = false;
 }
 
 function endGame() {
 	setTimeout(function(){
         let modal = document.getElementById("modal");
         modal.style.visibility = "visible";
-        document.querySelector('.win-results').textContent = 'With '+movesCounter+' Moves and '+ starsCounter+' Stars.';
+        document.querySelector('.win-results').textContent = 'With '+movesCounter+' Moves and '+ starsCounter+' Stars. Time: '+ time +'ms.';
         document.querySelector('.play-again').addEventListener('click', function(){
         modal.style.visibility = "hidden";
         restartGame();

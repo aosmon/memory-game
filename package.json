@@ -1,0 +1,23 @@
+{
+  "name": "memory-game",
+  "version": "1.0.0",
+  "description": "## Table of Contents",
+  "main": "index.js",
+  "dependencies": {
+    "timer.js": "^1.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aosmon/memory-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aosmon/memory-game/issues"
+  },
+  "homepage": "https://github.com/aosmon/memory-game#readme"
+}
