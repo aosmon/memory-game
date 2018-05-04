@@ -26,13 +26,17 @@ let restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', restartGame);
 let cards = document.getElementsByClassName('card');
 let deck = document.querySelector('.deck');
+//set up the event listener for a deck
 deck.addEventListener('click', onCardClick);
+//Initialize timer
 //https://github.com/husa/timer.js/
 let myTimer = new Timer({
   tick    : 1,
+  ontick  : function(ms) { time++; }
 });
 
 displayCards();
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -65,27 +69,40 @@ function shuffle(array) {
     return array;
 }
 
+/*
+ * When card is clicked
+ *   - check if clicked element is card
+ *   - check if clicked card is not matched already
+ *   - add the card to a *list* of "open" cards
+ *   - start Timer if not started
+ */
 function onCardClick(e){
 
   let timerStarted = false;
 
-      if(e.target.classList.contains('card')){
-          if(!e.target.classList.contains('match')){
-              showSymbol(e.target);
-              addToOpenCards(e.target);
-          }
-      }
+  if(e.target.classList.contains('card') && !e.target.classList.contains('match')){
+    showSymbol(e.target);
+    addToOpenCards(e.target);
+  }
+  //start timer
   if(!timerStarted){
     myTimer.start(1000);
   }
-  console.log(time);
 
 }
 
+// Show card's face
 function showSymbol(card){
     card.classList.add('open', 'show');
 }
 
+/*
+ * Add the card to a *list* of "open" cards
+ *   - if the list already has another card, check to see if the two cards match
+ *   - if the cards do match, lock the cards in the open position
+ *   - if the cards do not match, remove the cards from the list and hide the card's symbol
+ *   - increment the move counter and display it on the page
+ */
 function addToOpenCards(card){
     if(openCards.length===1){
         if(openCards[0]===card){
@@ -107,7 +124,11 @@ function addToOpenCards(card){
         updateScoreStars();
     }
 }
-
+/*
+ * Lock the cards in the open position
+ *   - Increment match counter
+ *   - check if all cards are matched and end game
+ */
 function lockCardsOpen(card){
     card.classList.add('match');
     matchCounter++;
@@ -116,6 +137,8 @@ function lockCardsOpen(card){
     }
 }
 
+
+//Hide the card's symbol
 function hideSymbols(card1, card2){
     card1.classList.add('wobble');
     card2.classList.add('wobble');
@@ -124,12 +147,12 @@ function hideSymbols(card1, card2){
         card2.setAttribute('class', 'card');
     }, 1000)
 }
-
+//Increment the move counter and display it on the page
 function incrementCounter(){
     movesCounter++;
     moves.textContent = movesCounter;
  }
-
+//Update score stars and display it on the page
  function updateScoreStars(){
      if(movesCounter>9){
 
@@ -147,23 +170,34 @@ function incrementCounter(){
          stars.children[0].firstElementChild.classList.add('fa-star-o');
      }
  }
-
+// Restart game and reset all stats
 function restartGame(){
     movesCounter = 0;
+    matchCounter = 0;
     cardFaces = shuffle(cardFaces);
+    //Reset/Hide cardFaces
     moves.textContent = movesCounter;
     for(let i=0; i<cardFaces.length;i++){
         cards[i].firstElementChild.remove();
         cards[i].setAttribute('class', 'card');
     }
+    //Reset stars
     stars.children[0].firstElementChild.setAttribute('class', 'fa fa-star');
     stars.children[1].firstElementChild.setAttribute('class', 'fa fa-star');
     stars.children[2].firstElementChild.setAttribute('class', 'fa fa-star');
-    displayCards();
+
+    //Reset timer
     time = 0;
     myTimer.stop();
     timerStarted = false;
+
+    displayCards();
 }
+/*
+ * End game
+ *   - display modal with game statistics
+ *   - restart game
+ */
 
 function endGame() {
 	setTimeout(function(){
@@ -171,20 +205,8 @@ function endGame() {
         modal.style.visibility = "visible";
         document.querySelector('.win-results').textContent = 'With '+movesCounter+' Moves and '+ starsCounter+' Stars. Time: '+ time +'ms.';
         document.querySelector('.play-again').addEventListener('click', function(){
-        modal.style.visibility = "hidden";
-        restartGame();
-
-    });
+          modal.style.visibility = "hidden";
+          restartGame();
+        });
     }, 1000);
 }
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
