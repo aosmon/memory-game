@@ -27,13 +27,9 @@ restartButton.addEventListener('click', restartGame);
 let cards = document.getElementsByClassName('card');
 let deck = document.querySelector('.deck');
 deck.addEventListener('click', onCardClick);
+//https://github.com/husa/timer.js/
 let myTimer = new Timer({
   tick    : 1,
-  ontick  : function(ms) { time++; },
-  onstart : function() { console.log('timer started') },
-  onstop  : function() { console.log('timer stop') },
-  onpause : function() { console.log('timer set on pause') },
-  onend   : function() { console.log('timer ended normally') }
 });
 
 displayCards();
