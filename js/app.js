@@ -20,7 +20,10 @@ let starsCounter = 3;
 let stars = document.querySelector('.stars');
 const MATCH = 16;
 let matchCounter = 0;
-let time = 0;
+let timerStarted = false;
+let timer;
+let timer_min = 0;
+let timer_sec = 0;
 
 let restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', restartGame);
@@ -28,12 +31,6 @@ let cards = document.getElementsByClassName('card');
 let deck = document.querySelector('.deck');
 //set up the event listener for a deck
 deck.addEventListener('click', onCardClick);
-//Initialize timer
-//https://github.com/husa/timer.js/
-let myTimer = new Timer({
-  tick    : 1,
-  ontick  : function(ms) { time++; }
-});
 
 displayCards();
 
@@ -78,17 +75,15 @@ function shuffle(array) {
  */
 function onCardClick(e){
 
-  let timerStarted = false;
-
   if(e.target.classList.contains('card') && !e.target.classList.contains('match')){
     showSymbol(e.target);
     addToOpenCards(e.target);
+    //start timer
+    if(!timerStarted){
+      startTimer();
+      timerStarted = true;
+    }
   }
-  //start timer
-  if(!timerStarted){
-    myTimer.start(1000);
-  }
-
 }
 
 // Show card's face
@@ -156,18 +151,21 @@ function incrementCounter(){
  function updateScoreStars(){
      if(movesCounter>9){
 
-        starsCounter = 2; stars.children[2].firstElementChild.classList.remove('fa-star');
-         stars.children[2].firstElementChild.classList.add('fa-star-o');
+        starsCounter = 2;
+        stars.children[2].firstElementChild.classList.remove('fa-star');
+        stars.children[2].firstElementChild.classList.add('fa-star-o');
      }
      if(movesCounter>14){
 
-        starsCounter = 1; stars.children[1].firstElementChild.classList.remove('fa-star');
-         stars.children[1].firstElementChild.classList.add('fa-star-o');
+        starsCounter = 1;
+        stars.children[1].firstElementChild.classList.remove('fa-star');
+        stars.children[1].firstElementChild.classList.add('fa-star-o');
      }
      if(movesCounter>20){
 
-        starsCounter = 0; stars.children[0].firstElementChild.classList.remove('fa-star');
-         stars.children[0].firstElementChild.classList.add('fa-star-o');
+        starsCounter = 0;
+        stars.children[0].firstElementChild.classList.remove('fa-star');
+        stars.children[0].firstElementChild.classList.add('fa-star-o');
      }
  }
 // Restart game and reset all stats
@@ -187,12 +185,34 @@ function restartGame(){
     stars.children[2].firstElementChild.setAttribute('class', 'fa fa-star');
 
     //Reset timer
-    time = 0;
-    myTimer.stop();
+    clearInterval(timer);
+    timer_min = 0;
+    timer_sec = 0;
     timerStarted = false;
+    document.querySelector(".timer-min").innerHTML = '00';
+    document.querySelector(".timer-sec").innerHTML = '00';
 
     displayCards();
 }
+
+// Timer
+// - updates time on board
+function myTimer() {
+    if(timer_sec==60){
+      timer_min++;
+      timer_sec=0;
+    }
+    timer_sec++;
+
+    document.querySelector(".timer-min").innerHTML = timer_min<10 ? '0'+timer_min : timer_min;
+    document.querySelector(".timer-sec").innerHTML = timer_sec<10 ? '0'+timer_sec : timer_sec;
+}
+// Start time count
+// - increases every second
+function startTimer(){
+    timer = setInterval(function(){ myTimer() }, 1000);
+}
+
 /*
  * End game
  *   - display modal with game statistics
@@ -203,7 +223,9 @@ function endGame() {
 	setTimeout(function(){
         let modal = document.getElementById("modal");
         modal.style.visibility = "visible";
-        document.querySelector('.win-results').textContent = 'With '+movesCounter+' Moves and '+ starsCounter+' Stars. Time: '+ time +'ms.';
+        document.querySelector('.win-results-moves').textContent = 'Moves: '+movesCounter;
+        document.querySelector('.win-results-stars').textContent = 'Stars: '+ starsCounter;
+        document.querySelector('.win-results-time').textContent = 'Time: '+ timer_min+' min '+timer_sec+' sec';
         document.querySelector('.play-again').addEventListener('click', function(){
           modal.style.visibility = "hidden";
           restartGame();

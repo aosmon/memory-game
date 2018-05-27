@@ -216,10 +216,20 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 355px;
     margin-bottom: 10px;
 }
-
+.score-panel .timer{
+    margin: 0 10px 0 10px;
+    display: inline-block;
+    width: 50px;
+}
+.score-panel .timer-sec{
+    width: 25px;
+}
+.score-panel .timer-min{
+    width: 15px;
+}
 .score-panel .stars {
     margin: 0;
     padding: 0;
